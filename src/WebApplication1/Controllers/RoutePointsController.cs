@@ -39,6 +39,17 @@ namespace WebApplication1.Controllers
             return View(routePoint);
         }
 
+        public List<RoutePoint> GetSortedPointsByRouteId(int routeID)
+        {
+            List<RoutePoint> initialList = _context.RoutePoint.Where(rp => rp.TransportRouteID == routeID).ToList();
+            initialList.Sort((a, b) => b.ID -  a.ID);
+            foreach (var point in initialList)
+            {
+                point.NextRoutePoint = null;
+            }
+            return initialList;
+
+        }
         // GET: RoutePoints/Create
         public IActionResult Create()
         {
