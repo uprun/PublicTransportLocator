@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
@@ -52,36 +53,6 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                 _context.RoutePoint.Add(routePoint);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(routePoint);
-        }
-
-        // GET: RoutePoints/Edit/5
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return HttpNotFound();
-            }
-
-            RoutePoint routePoint = _context.RoutePoint.Single(m => m.ID == id);
-            if (routePoint == null)
-            {
-                return HttpNotFound();
-            }
-            return View(routePoint);
-        }
-
-        // POST: RoutePoints/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(RoutePoint routePoint)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Update(routePoint);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }

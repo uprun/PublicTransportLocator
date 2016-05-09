@@ -30,6 +30,7 @@ namespace WebApplication1.Controllers
             }
 
             TransportRoute transportRoute = _context.TransportRoute.Single(m => m.ID == id);
+            transportRoute.RoutePoints = _context.RoutePoint.Where(rp => rp.TransportRouteID == transportRoute.ID).ToList();
             if (transportRoute == null)
             {
                 return HttpNotFound();
@@ -37,6 +38,8 @@ namespace WebApplication1.Controllers
 
             return View(transportRoute);
         }
+
+
 
         // GET: TransportRoutes/Create
         public IActionResult Create()

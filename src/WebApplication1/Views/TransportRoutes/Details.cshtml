@@ -22,3 +22,38 @@
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </p>
+<table class="table">
+    <tr>
+        <th>
+            @nameof(RoutePoint.ID)
+        </th>
+        <th>
+            @nameof(RoutePoint.Latitude)
+        </th>
+        <th>
+            @nameof(RoutePoint.Longitude)
+        </th>
+        <th>
+            @nameof(RoutePoint.NextRoutePointID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.RoutePoints)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Longitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextRoutePointID)
+            </td>
+        </tr>
+    }
+</table>
