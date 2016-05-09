@@ -13,6 +13,6 @@ namespace WebApplication1.Models
 
         public string RouteName {get; set;}
 
-        public virtual IEnumerable<RoutePoint> RoutePoints { get; set; }
+        public virtual ICollection<RoutePoint> RoutePoints { get; set; }
     }
 }

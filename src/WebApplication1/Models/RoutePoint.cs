@@ -10,7 +10,9 @@ namespace WebApplication1.Models
     {
         [ScaffoldColumn(false)]
         public int ID { get; set; }
+
         public double Longitude { get; set; }
+
         public double Latitude { get; set; }
 
         [ScaffoldColumn(false)]

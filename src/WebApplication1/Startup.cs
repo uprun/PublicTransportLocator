@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApplication1.Models;
+using System.Globalization;
+using Microsoft.AspNet.Localization;
 
 namespace WebApplication1
 {
@@ -49,7 +51,7 @@ namespace WebApplication1
                 .AddSqlite()
                 .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection));
 
-            services.AddMvc();
+            services.AddMvc(); 
 
             // Add application services.
         }
@@ -84,6 +86,20 @@ namespace WebApplication1
                 }
                 catch { }
             }
+
+            var requestLocalizationOptions = new RequestLocalizationOptions
+            {
+                SupportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US")
+                },
+                SupportedUICultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US")
+                }
+            };
+
+            app.UseRequestLocalization(requestLocalizationOptions, new RequestCulture(new CultureInfo("en-US"), new CultureInfo("en-US")));
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
