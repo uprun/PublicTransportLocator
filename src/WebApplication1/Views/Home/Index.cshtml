@@ -86,15 +86,16 @@
     {
         update_markersOnMap();
         updateLocationsRandomly();
-        setTimeout(autoUpdateMarkers, 5000);
+        setTimeout(autoUpdateMarkers, 1000);
     }
 
-      function init_map() {
-          var var_location = new google.maps.LatLng(46.485905, 30.739087);
+    function init_map() {
+        	
+        var var_location = new google.maps.LatLng(46.468032, 30.741727);
 
         var var_mapoptions = {
           center: var_location,
-          zoom: 11
+          zoom: 12
         };
 
         var var_map = new google.maps.Map(document.getElementById("map-container"),
@@ -106,7 +107,7 @@
 
         drawRouteOnMap();
         
-        setTimeout(autoUpdateMarkers, 5000);
+        setTimeout(autoUpdateMarkers, 1000);
 
       }
 

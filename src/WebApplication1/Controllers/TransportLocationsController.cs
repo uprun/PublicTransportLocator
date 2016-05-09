@@ -131,17 +131,41 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public void UpdateLocationsRandomly()
+        public void UpdateLocationsRandomly(int routeID = 1)
         {
+            List<RoutePoint> initialList = _context.RoutePoint.Where(rp => rp.TransportRouteID == routeID).ToList();
+            initialList.Sort((a, b) => b.ID - a.ID);
+            List<double> partialLengths = new List<double>();
+            partialLengths.Add(0);
+            double totalLength = 0;
+            for (int i = 1; i < initialList.Count; ++i)
+            {
+                var prev = initialList[i - 1];
+                var cur = initialList[i];
+                totalLength += Math.Sqrt(Math.Pow(prev.Latitude - cur.Latitude, 2.0) + Math.Pow(prev.Longitude - cur.Longitude, 2.0));
+                partialLengths.Add(totalLength);
+            }
+
+            
+
             Random rnd = new Random((int)DateTime.Now.Ticks);
             List<TransportLocation> locations = _context.TransportLocation.ToList();
+
+            int count = 0;
             foreach (var location in locations)
             {
-                double latitude_shift = (rnd.Next() % 3 - 1) * 0.001;
-                double longitude_shift = (rnd.Next() % 3 - 1) * 0.001;
-                location.Latitude += latitude_shift;
-                location.Longitude += longitude_shift;
+                double desiredTotalPath = totalLength *  ((DateTime.Now.Second + (count * 60) / locations.Count) % 60) / 60.0 ;
+                int index = partialLengths.FindIndex((ps) => ps > desiredTotalPath);
+                var prev = initialList[index - 1];
+                var cur = initialList[index];
+                double localPath = desiredTotalPath - partialLengths[index - 1];
+                double percentage = localPath / (partialLengths[index] - partialLengths[index - 1]);
+
+                location.Latitude = (cur.Latitude- prev.Latitude) * percentage + prev.Latitude;
+                location.Longitude = (cur.Longitude - prev.Longitude) * percentage + prev.Longitude ;
                 location.LocationRecordedTime = DateTime.UtcNow;
+
+                count++;
             }
             _context.TransportLocation.UpdateRange(locations);
             _context.SaveChanges();
