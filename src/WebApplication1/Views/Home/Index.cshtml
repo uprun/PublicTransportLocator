@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    #map-container {
+        height: 500px;
+        width: 100%;
+    }
+</style>
+
+<script>
+
+    var ref_to_map;
+    var added_markers = [];
+
+    function update_markersOnMap()
+    {
+        $.ajax(
+            {
+                method: "GET",
+                url: "transportLocations/getAllLocations"
+            }
+        ).done(
+            function (data) {
+                for (index in added_markers) {
+                    var var_marker = added_markers[index];
+                    var_marker.setMap(null);
+                }
+                added_markers = [];
+                for (index in data) {
+                    var element = data[index];
+                    var var_location = new google.maps.LatLng(element.Latitude, element.Longitude);
+                    var var_marker = new google.maps.Marker({
+                        position: var_location,
+                        map: ref_to_map,
+                        title: element.TransportRouteID
+                    });
+                    var_marker.setMap(ref_to_map);
+                    added_markers.push(var_marker);
+                }
+            });
+    }
+
+    function updateLocationsRandomly()
+    {
+        $.ajax(
+            {
+                method: "POST",
+                url: "transportLocations/UpdateLocationsRandomly"
+            }
+        );
+    }
+
+    function autoUpdateMarkers()
+    {
+        update_markersOnMap();
+        updateLocationsRandomly();
+        setTimeout(autoUpdateMarkers, 5000);
+    }
+
+      function init_map() {
+          var var_location = new google.maps.LatLng(46.485905, 30.739087);
+
+        var var_mapoptions = {
+          center: var_location,
+          zoom: 11
+        };
+
+        var var_map = new google.maps.Map(document.getElementById("map-container"),
+            var_mapoptions);
+
+        ref_to_map = var_map;
+
+        update_markersOnMap();
+        
+        setTimeout(autoUpdateMarkers, 5000);
+
+      }
+
+      google.maps.event.addDomListener(window, 'load', init_map);
+
+</script>
+
+<div id="map-container" class="col-md-6"></div>
+
