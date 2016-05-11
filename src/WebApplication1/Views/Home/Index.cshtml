@@ -72,7 +72,7 @@
             });
     }
 
-    function updateLocationsRandomly()
+    function updateLocationsForDemo()
     {
         $.ajax(
             {
@@ -85,7 +85,7 @@
     function autoUpdateMarkers()
     {
         update_markersOnMap();
-        updateLocationsRandomly();
+        updateLocationsForDemo();
         setTimeout(autoUpdateMarkers, 1000);
     }
 
