@@ -130,43 +130,61 @@ namespace WebApplication1.Controllers
 
         }
 
-        [HttpPost]
-        public void UpdateLocationsForDemo(int routeID = 1)
+        public List<TransportLocation> UpdateLocationsOnRoute(List<RoutePoint> routePoints, List<KeyValuePair< TransportLocation, double>> preparedLocations )
         {
-            List<RoutePoint> initialList = _context.RoutePoint.Where(rp => rp.TransportRouteID == routeID).ToList();
-            initialList.Sort((a, b) => b.ID - a.ID);
+            routePoints.Sort((a, b) => b.ID - a.ID);
             List<double> partialLengths = new List<double>();
             partialLengths.Add(0);
             double totalLength = 0;
-            for (int i = 1; i < initialList.Count; ++i)
+            for (int i = 1; i < routePoints.Count; ++i)
             {
-                var prev = initialList[i - 1];
-                var cur = initialList[i];
+                var prev = routePoints[i - 1];
+                var cur = routePoints[i];
                 totalLength += Math.Sqrt(Math.Pow(prev.Latitude - cur.Latitude, 2.0) + Math.Pow(prev.Longitude - cur.Longitude, 2.0));
                 partialLengths.Add(totalLength);
             }
 
-            
+            List<TransportLocation> locationsToReturn = new List<TransportLocation>();
+            foreach (var locationPair in preparedLocations)
+            {
+                double desiredTotalPath = totalLength * locationPair.Value;
+                TransportLocation location = locationPair.Key;
+                int index = partialLengths.FindIndex((ps) => ps > desiredTotalPath);
+                var prev = routePoints[index - 1];
+                var cur = routePoints[index];
+                double localPath = desiredTotalPath - partialLengths[index - 1];
+                double percentage = localPath / (partialLengths[index] - partialLengths[index - 1]);
 
-            Random rnd = new Random((int)DateTime.Now.Ticks);
+                location.Latitude = (cur.Latitude - prev.Latitude) * percentage + prev.Latitude;
+                location.Longitude = (cur.Longitude - prev.Longitude) * percentage + prev.Longitude;
+                location.LocationRecordedTime = DateTime.UtcNow;
+
+                
+                locationsToReturn.Add(location);
+
+            }
+            return locationsToReturn;
+        }
+
+        [HttpPost]
+        public void UpdateLocationsForDemo(int routeID = 1)
+        {
+            List<RoutePoint> routePoints = _context.RoutePoint.Where(rp => rp.TransportRouteID == routeID).ToList();
+            
             List<TransportLocation> locations = _context.TransportLocation.ToList();
+
+            List<KeyValuePair<TransportLocation, double>> preparedLocations = new List<KeyValuePair<TransportLocation, double>>();
 
             int count = 0;
             foreach (var location in locations)
             {
-                double desiredTotalPath = totalLength *  ((DateTime.Now.Second + (count * 60) / locations.Count) % 60) / 60.0 ;
-                int index = partialLengths.FindIndex((ps) => ps > desiredTotalPath);
-                var prev = initialList[index - 1];
-                var cur = initialList[index];
-                double localPath = desiredTotalPath - partialLengths[index - 1];
-                double percentage = localPath / (partialLengths[index] - partialLengths[index - 1]);
-
-                location.Latitude = (cur.Latitude- prev.Latitude) * percentage + prev.Latitude;
-                location.Longitude = (cur.Longitude - prev.Longitude) * percentage + prev.Longitude ;
-                location.LocationRecordedTime = DateTime.UtcNow;
-
+                // prepare location in form of route's percentage
+                double desiredTotalPath = ((DateTime.Now.Second + (count * 60) / locations.Count) % 60) / 60.0 ;
                 count++;
+                preparedLocations.Add(new KeyValuePair<TransportLocation, double>(location, desiredTotalPath));
+
             }
+            locations = UpdateLocationsOnRoute(routePoints, preparedLocations);
             _context.TransportLocation.UpdateRange(locations);
             _context.SaveChanges();
         }
