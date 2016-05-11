@@ -1,0 +1,44 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "UnitTests Console Application",
+  "authors": [ "Alexander.Kryvonos" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+  },
+
+  "commands": {
+    "UnitTests": "UnitTests"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Threading": "4.0.11-beta-23516",
+        "WebApplication1": "1.0.0",
+        "NUnit": "3.2.1",
+        "NUnitLite": "3.2.1"
+      }
+    },
+    "dnxcore50": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Threading": "4.0.11-beta-23516",
+        "WebApplication1": "1.0.0",
+        "NUnit": "3.2.1",
+        "NUnitLite": "3.2.1"
+      }
+    }
+  }
+}

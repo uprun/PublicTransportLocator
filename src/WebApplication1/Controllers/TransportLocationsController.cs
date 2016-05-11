@@ -150,6 +150,13 @@ namespace WebApplication1.Controllers
                 double desiredTotalPath = totalLength * locationPair.Value;
                 TransportLocation location = locationPair.Key;
                 int index = partialLengths.FindIndex((ps) => ps > desiredTotalPath);
+                if (index < 0)
+                {
+                    // in case if no partial sum was found then desiredTotalPath is l zero or is 
+                    // so last index need to be selected
+                    index = partialLengths.Count - 1;
+                    desiredTotalPath = totalLength;
+                }
                 var prev = routePoints[index - 1];
                 var cur = routePoints[index];
                 double localPath = desiredTotalPath - partialLengths[index - 1];
