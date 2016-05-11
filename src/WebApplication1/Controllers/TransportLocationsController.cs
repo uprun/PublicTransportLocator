@@ -131,7 +131,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public void UpdateLocationsRandomly(int routeID = 1)
+        public void UpdateLocationsForDemo(int routeID = 1)
         {
             List<RoutePoint> initialList = _context.RoutePoint.Where(rp => rp.TransportRouteID == routeID).ToList();
             initialList.Sort((a, b) => b.ID - a.ID);
