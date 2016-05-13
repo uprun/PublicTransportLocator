@@ -1,0 +1,57 @@
+@model IEnumerable<PublicTransportLocatorWebApp.Models.TransportLocation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationRecordedTime)
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.LocationRecordedTime)" asp-route-sortType="Asc">Asc</a>|
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.LocationRecordedTime)" asp-route-sortType="Desc">Desc</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Latitude)
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.Latitude)" asp-route-sortType="Asc">Asc</a>|
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.Latitude)" asp-route-sortType="Desc">Desc</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Longitude)
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.Longitude)" asp-route-sortType="Asc">Asc</a>|
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.Longitude)" asp-route-sortType="Desc">Desc</a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransportRouteID)
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.TransportRouteID)" asp-route-sortType="Asc">Asc</a>|
+            <a asp-action="Index" asp-route-sortBy="@nameof(TransportLocation.TransportRouteID)" asp-route-sortType="Desc">Desc</a>
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationRecordedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Longitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TransportRouteID)
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+        </td>
+    </tr>
+}
+</table>

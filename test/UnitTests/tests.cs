@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models;
+using PublicTransportLocatorWebApp.Models;
 
 namespace UnitTests
 {
@@ -13,7 +13,7 @@ namespace UnitTests
         [Test]
         public void FirstTest()
         {
-            WebApplication1.Controllers.TransportLocationsController tlc = new WebApplication1.Controllers.TransportLocationsController(null);
+            PublicTransportLocatorWebApp.Controllers.TransportLocationsController tlc = new PublicTransportLocatorWebApp.Controllers.TransportLocationsController(null);
             List<RoutePoint> routePoints = new List<RoutePoint> {
                 new RoutePoint() {
                     ID = 1,
@@ -76,7 +76,7 @@ namespace UnitTests
         [Test]
         public void ThreePointsRouteTest()
         {
-            WebApplication1.Controllers.TransportLocationsController tlc = new WebApplication1.Controllers.TransportLocationsController(null);
+            PublicTransportLocatorWebApp.Controllers.TransportLocationsController tlc = new PublicTransportLocatorWebApp.Controllers.TransportLocationsController(null);
             List<RoutePoint> routePoints = new List<RoutePoint> {
                 new RoutePoint() {
                     ID = 1,
