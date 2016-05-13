@@ -74,17 +74,6 @@ namespace WebApplication1
             {
                 app.UseExceptionHandler("/Home/Error");
 
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
             }
 
             var requestLocalizationOptions = new RequestLocalizationOptions
