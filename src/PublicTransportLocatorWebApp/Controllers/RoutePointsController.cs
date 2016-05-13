@@ -50,10 +50,31 @@ namespace PublicTransportLocatorWebApp.Controllers
             return initialList;
 
         }
+
+        public class PointSelectItem
+        {
+            public int? Id { get; set; }
+            public string Value { get; set; }
+        }
+
+        public class RouteSelectItem
+        {
+            public int Id { get; set; }
+            public string Value { get; set; }
+        }
         // GET: RoutePoints/Create
         public IActionResult Create()
         {
-            return View();
+            var existingPoints = _context.RoutePoint.OrderBy(point => point.ID).Select(x => new PointSelectItem { Id = x.ID, Value = x.ID.ToString() }).ToList();
+
+            existingPoints.Add(new PointSelectItem() { Id = null, Value = "None" });
+
+            var existingRoutes = _context.TransportRoute.OrderBy(route => route.ID).Select(x => new RouteSelectItem { Id = x.ID, Value = x.RouteName }).ToList();
+
+            var model = new RoutePoint();
+            model.NextRoutePointsList = new SelectList(existingPoints, "Id", "Value");
+            model.TransportRoutesList = new SelectList(existingRoutes, "Id", "Value");
+            return View(model);
         }
 
         // POST: RoutePoints/Create

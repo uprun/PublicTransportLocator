@@ -28,14 +28,14 @@
         <div class="form-group">
             <label asp-for="NextRoutePointID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="NextRoutePointID" class="form-control" />
+                <select asp-for="NextRoutePointID" class="form-control" asp-items="@Model.NextRoutePointsList"></select>
                 <span asp-validation-for="NextRoutePointID" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="TransportRouteID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="TransportRouteID" class="form-control" />
+                <select asp-for="TransportRouteID" class="form-control" asp-items="@Model.TransportRoutesList" ></select>
                 <span asp-validation-for="TransportRouteID" class="text-danger" />
             </div>
         </div>

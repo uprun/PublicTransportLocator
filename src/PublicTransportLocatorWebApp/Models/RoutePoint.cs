@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PublicTransportLocatorWebApp.Models
 {
@@ -18,10 +20,16 @@ namespace PublicTransportLocatorWebApp.Models
         [ScaffoldColumn(false)]
         public int? NextRoutePointID { get; set; }
 
+        [NotMapped]
+        public SelectList NextRoutePointsList { get; set; }
+
         public virtual RoutePoint NextRoutePoint { get; set; }
 
         [ScaffoldColumn(false)]
         public int TransportRouteID { get; set; }
+
+        [NotMapped]
+        public SelectList TransportRoutesList { get; set; }
 
         public virtual TransportRoute TransportRoute { get; set; }
     }
