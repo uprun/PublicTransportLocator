@@ -26,6 +26,10 @@
 *.tar
 *.zip
 
+# Modules and packages #
+########################
+*/node_modules/*
+
 # Logs and databases #
 ######################
 *.log
