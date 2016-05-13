@@ -88,48 +88,6 @@ namespace WebApplication1.Controllers
             return _context.TransportLocation.ToList();
         }
 
-        public bool DeleteAllLocations()
-        {
-            _context.TransportLocation.RemoveRange(_context.TransportLocation);
-            _context.SaveChanges();
-            return true;
-        }
-
-        public bool GenerateRandomLocations()
-        {
-            double leftBottom_latitude = 46.3819427;
-            double leftBottom_longitude = 30.6671623;
-            double topRight_latitude = 46.4828937;
-            double topRight_longitude = 30.7564793;
-
-            Random rnd = new Random((int)DateTime.Now.Ticks);
-
-            TransportRoute route = new TransportRoute() {
-                RouteName = "Random Route"
-            };
-
-            _context.TransportRoute.Add(route);
-
-            int points = 10;
-            for (int i = 0; i < points; i++)
-            {
-                double latitude = rnd.NextDouble() * (topRight_latitude - leftBottom_latitude) + leftBottom_latitude;
-                double longitude = rnd.NextDouble() * (topRight_longitude - leftBottom_longitude) + leftBottom_longitude;
-
-                _context.TransportLocation.Add(new TransportLocation() {
-                    Longitude = longitude,
-                    Latitude = latitude,
-                    LocationRecordedTime = DateTime.UtcNow,
-                    TransportRoute = route
-                });
-
-            }
-            _context.SaveChanges();
-            
-            return true;
-
-        }
-
         public List<TransportLocation> UpdateLocationsOnRoute(List<RoutePoint> routePoints, List<KeyValuePair< TransportLocation, double>> preparedLocations )
         {
             routePoints.Sort((a, b) => b.ID - a.ID);
